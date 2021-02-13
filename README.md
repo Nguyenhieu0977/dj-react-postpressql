@@ -6,8 +6,16 @@
 
 # cd backend
 
-# python -m venv vnev
-
 # pip3 install -U pip virtualenv
 
-# source venv\Scripts\activate
+# virtualenv --system-site-packages -p python ./venv
+
+# .\venv\Scripts\activate
+
+# pip install django djangorestframework django-cors-headers djangorestframework-simplejwt Pillow psycopg2 psycopg2-binary
+
+# tao Database
+
+# django-admin startproject realest_estate
+
+# python manage.py startapp accounts
