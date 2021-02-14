@@ -1,61 +1,76 @@
-import axios from 'axios';
-import { setAlert } from './alert';
-import { SIGNUP_SUCCESS, SIGNUP_FAIL, LOGIN_SUCCESS, LOGIN_FAIL, LOGOUT } from './types';
+import axios from "axios";
+import { setAlert } from "./alert";
+import {
+  SIGNUP_SUCCESS,
+  SIGNUP_FAIL,
+  LOGIN_SUCCESS,
+  LOGIN_FAIL,
+  LOGOUT,
+} from "./types";
 
-export const login = (email, password) => async dispatch => {
-    const config = {
-        headers: {
-            'Content-Type' : 'application/json'
-        }
-    }
+export const login = (email, password) => async (dispatch) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
 
-    const body = JSON.stringify({ email, password });
+  const body = JSON.stringify({ email, password });
 
-    try {
-        const res = await axios.post('http://localhost:8000/api/token', body, config)
-        
-        dispatch({
-            type: LOGIN_SUCCESS,
-            payload: res.data
-        });
+  try {
+    const res = await axios.post(
+      "http://localhost:8000/api/token",
+      body,
+      config
+    );
 
-        dispatch(setAlert('Đăng nhập thành công', 'success'));
-    } catch (err) {
-        dispatch({
-            type: LOGIN_FAIL
-        });
-        dispatch(setAlert('Lỗi xác thực', 'error'));
-    }
-}
+    dispatch({
+      type: LOGIN_SUCCESS,
+      payload: res.data,
+    });
 
-export const signup = ({ name, email, password, password2 }) => async dispatch => {
-    const config = {
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    }
+    dispatch(setAlert("Đăng nhập thành công", "success"));
+  } catch (err) {
+    dispatch({
+      type: LOGIN_FAIL,
+    });
+    dispatch(setAlert("Lỗi xác thực", "error"));
+  }
+};
 
-    const body = JSON.stringify({ name, email, password, password2 });
+export const signup = ({ name, email, password, password2 }) => async (
+  dispatch
+) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
 
-    try {
-        const res = wait axios.post('http://localhost:8000/api/accounts/signup', body, config)
-        
-        dispatch({
-            type: SIGNUP_SUCCESS,
-            payload: res.data
-        })
+  const body = JSON.stringify({ name, email, password, password2 });
 
-        dispatch(login(email, password))
-    } catch (err) {
-        dispatch({
-            type: SIGNUP_FAIL
-        });
-        dispatch(setAlert('Lỗi xác thực', 'error'))
-    }
+  try {
+    const res = await axios.post(
+      "http://localhost:8000/api/accounts/signup",
+      body,
+      config
+    );
 
-}
+    dispatch({
+      type: SIGNUP_SUCCESS,
+      payload: res.data,
+    });
 
-export const logout = () => dispatch => {
-    dispatch(setAlert('Đăng xuất thành công', 'success'));
-    dispatch({ type: LOGOUT});
-}
+    dispatch(login(email, password));
+  } catch (err) {
+    dispatch({
+      type: SIGNUP_FAIL,
+    });
+    dispatch(setAlert("Lỗi xác thực", "error"));
+  }
+};
+
+export const logout = () => (dispatch) => {
+  dispatch(setAlert("Đăng xuất thành công", "success"));
+  dispatch({ type: LOGOUT });
+};
